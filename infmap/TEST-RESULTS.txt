@@ -1,6 +1,0 @@
-[ACF InfMap v8] Autorun file loaded (server).
-[ACF InfMap] Chunk traces and bullet effects installed.
-[ACF InfMap v8] Autorun file loaded (client).
-[ACF InfMap] Chunk traces and bullet effects installed.
-PASS: gun/barrel/radar chunk routing; 10,000 same-chunk checks; HUD, tools and unrelated ballistics use original traces; bounds and error-scope recovery.
-PASS: 5,000 bullet updates allocate zero additional effects; terminal/orphan/removal cleanup; reused-index ownership; 256 visual cap; wall-clock expiry; client traces untouched.

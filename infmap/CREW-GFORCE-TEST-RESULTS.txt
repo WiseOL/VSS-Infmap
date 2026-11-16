@@ -1,1 +1,0 @@
-PASS: mocked Lua tests for position rebases, real acceleration/braking/impacts, sampling intervals, rigid rotation, relative turret motion, unrelated trackers and ordinary maps. Existing gun/radar/bullet-effect, camera and mobility regression suites passed. No live GMod playtest.
