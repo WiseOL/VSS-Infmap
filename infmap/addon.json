@@ -1,0 +1,6 @@
+{
+    "title": "InfMap with ACF 3 Compatibility",
+    "type": "map",
+    "tags": ["build", "fun"],
+    "ignore": ["*.md", "*.txt"]
+}
