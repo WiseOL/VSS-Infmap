@@ -1,7 +1,0 @@
-v34: Wire entity model chunk rendering
-
-The live native-frame render adapter now includes gmod_wire_ entity classes. Model origins, parent/root chunks, viewer offsets and visibility bounds use the same handling as ordinary physics props and ACF entities. Same-chunk wrappers and distant box model rendering are included. Existing Draw functions and captured RenderOverride callbacks remain in place. HUD/trace behavior is unchanged.
-
-Validation: mocked integration tests for gates, E2, screens, digital screens, text screens, EGP, camera controllers, holograms, pods, thrusters, buttons and a custom Wire class. Parent rotation, stale pose, viewer mutation, callback count/flags, matrix preservation, cleanup and FLIR checks pass. ACF, prop, P2M and E2 hologram positioning regressions pass. These tests verify the shared rendering adapter, not each real Wire entity's complete custom draw implementation. Screen surfaces, wires and hologram clipping still need in-game verification.
-
-Install: replace addons/infmap with this archive's infmap folder. Fully restart the server and reconnect clients. Map included.

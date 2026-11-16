@@ -1,7 +1,0 @@
-PASS: player/prop eligibility no longer vetoed; native PASSABLE_DOOR selected; terrain/ordinary-prop/chunk filtering preserved; group restoration works.
-PASS: WORLD-group props preserve public group, collide with same-chunk terrain/planets/OBJ, ignore ordinary entities, reject other chunks, and restore normal group.
-PASS: 800 terrain/planet cleanup requests coalesce to one scan; occupied/reoccupied chunks retained and empty chunks removed.
-PASS: actual server networking propagates real changes once per descendant and skips 600 redundant updates.
-PASS: P2M local link transforms corrected; physical-parent chunk overrides stale mesh metadata; viewer changes sync; clip refresh retained without wrapper recursion.
-PASS: actual client list refresh uses one full snapshot and retains visible candidate order during compaction.
-No live Garry's Mod validation.

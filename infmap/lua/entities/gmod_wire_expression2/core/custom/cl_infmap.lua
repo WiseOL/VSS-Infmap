@@ -1,1 +1,0 @@
-E2Helper.Descriptions["getInfMapHeight(v)"] = E2Helper.Descriptions["GetInfMapHeight(v)"]
