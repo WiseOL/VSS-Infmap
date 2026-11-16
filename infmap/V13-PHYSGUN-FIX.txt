@@ -1,0 +1,21 @@
+Revision 13 fixes a v12 physgun regression: the WORLD-mode emulation no longer
+returns false for player/prop ShouldCollide eligibility checks. The native
+collision group is now PASSABLE_DOOR so engine player movement remains passable,
+while ordinary props are rejected by the custom rule and same-chunk InfMap
+terrain/planet/OBJ colliders remain allowed. The public collision-group API
+still reports WORLD. Ownership, PhysgunPickup permission hooks, pickup mass
+limits, trace APIs and explicitly disabled physics collisions are unchanged.
+
+Replace the old combined addon folder, fully restart the server, reconnect,
+and test a newly spawned prop after applying no-collide. Confirm pickup/freeze,
+player pass-through, prop pass-through and terrain support. Do not hot-reload
+this metatable change. Prior performance, P2M, RAC, camera and crew fixes remain.
+
+Regression tests verify that same-chunk player/prop pairs are not vetoed in
+ShouldCollide, the native player-passable group is selected, terrain remains
+allowed, other props remain excluded, cross-chunk pairs remain excluded, and
+normal group restoration works. Other v12 regression cases were rerun. Mocked
+runtime only; real physgun pickup and player movement need live verification.
+
+Collision group reference:
+https://wiki.facepunch.com/gmod/Enums/COLLISION_GROUP

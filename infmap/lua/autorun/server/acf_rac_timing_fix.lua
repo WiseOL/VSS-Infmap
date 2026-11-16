@@ -1,0 +1,2 @@
+-- Retired in v37: current ACF owns augmented/progress timers, including
+-- blocked/paused reloads. Do not replace this API with the old VSS fork timer.

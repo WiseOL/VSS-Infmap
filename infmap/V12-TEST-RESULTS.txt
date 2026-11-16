@@ -1,0 +1,23 @@
+PASS: WORLD-group props preserve public group, collide with same-chunk terrain/planets/OBJ, ignore ordinary entities, reject other chunks, and restore normal group.
+PASS: 800 terrain/planet cleanup requests coalesce to one scan; occupied/reoccupied chunks retained and empty chunks removed.
+PASS: actual server networking propagates real changes once per descendant and skips 600 redundant updates.
+PASS: P2M local link transforms corrected; physical-parent chunk overrides stale mesh metadata; viewer changes sync; clip refresh retained without wrapper recursion.
+PASS: actual client list refresh uses one full snapshot and retains visible candidate order during compaction.
+PASS: repeated coordinate rebases create no Gs; real acceleration/braking and boundary impact retained; sample rates honored; centripetal and relative turret motion retained; other trackers unchanged.
+PASS: no override on ordinary maps.
+PASS: actual ACF AI/O ProcessCameras returns global aim through positive/negative/distant chunks and hits another chunk; HUD stays unchanged.
+PASS: TFE camera aims keep global targets across multiple axes/chunks, queued packets retain their frame, repeated require is safe, other messages and repaired scripts remain unchanged.
+PASS: Starfall bridge does not activate on ordinary maps.
+PASS: regression fixture exposes lost angular velocity in original teleport helpers; patched helpers preserve wheel RPM and linear velocity through 100 teleports/angle restores.
+PASS: force points use body chunk for positive/negative/zero chunks and boundary-straddling points; force vectors are unchanged.
+PASS: gun/barrel/radar chunk routing; 10,000 same-chunk checks; HUD, tools and unrelated ballistics use original traces; bounds and error-scope recovery.
+PASS: 5,000 bullet updates allocate zero additional effects; terminal/orphan/removal cleanup; reused-index ownership; 256 visual cap; wall-clock expiry; client traces untouched.
+REPRODUCED: original ACF timer fires a 30-round belt at t=0 when a 0.03s RAC interval is below the 0.05s server tick.
+PASS: tick=0.050000s, interval=0.030s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.030000s, interval=0.030s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.015152s, interval=0.005s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.015152s, interval=0.030s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.015152s, interval=0.500s; no inline burst, 30 shots remain spaced.
+PASS: cancellation remains idempotent and deliberate zero-delay completion remains immediate.
+
+No live GMod playtest or measured frame-time benchmark.

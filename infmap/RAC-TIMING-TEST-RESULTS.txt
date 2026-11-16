@@ -1,0 +1,13 @@
+[ACF RAC timing] Positive reload delays now wait for a server tick.
+[ACF RAC timing] Positive reload delays now wait for a server tick.
+[ACF RAC timing] Positive reload delays now wait for a server tick.
+[ACF RAC timing] Positive reload delays now wait for a server tick.
+[ACF RAC timing] Positive reload delays now wait for a server tick.
+[ACF RAC timing] Positive reload delays now wait for a server tick.
+REPRODUCED: original ACF timer fires a 30-round belt at t=0 when a 0.03s RAC interval is below the 0.05s server tick.
+PASS: tick=0.050000s, interval=0.030s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.030000s, interval=0.030s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.015152s, interval=0.005s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.015152s, interval=0.030s; no inline burst, 30 shots remain spaced.
+PASS: tick=0.015152s, interval=0.500s; no inline burst, 30 shots remain spaced.
+PASS: cancellation remains idempotent and deliberate zero-delay completion remains immediate.

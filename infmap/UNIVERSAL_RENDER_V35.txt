@@ -1,0 +1,11 @@
+v35: Shared entity chunk rendering
+
+Removed the physics/ACF/Wire class whitelist. Every entity admitted by InfMap's existing entity filter now uses the shared native parent/root/viewer frame for standard model rendering and visibility bounds. Same-chunk entities keep a live wrapper. LOD decisions now resolve the current root/viewer chunk on each draw, so a hidden or box representation can recover without wrapper reinstallation. Existing distance limits remain.
+
+Existing entity Draw functions, captured RenderOverride callbacks and RenderMultiply matrices remain owned by their addons. Ragdolls retain their independent engine render/bone poses. Bone/attachment parents use the native engine transform rather than a parent-local approximation. Parent walks are bounded. Existing world, viewmodel and internal-entity exclusions remain. Addons with a deliberate independent render pose can set ent.InfMapKeepRenderPose=true to preserve that pose while still receiving the chunk camera shift. P2M's adapter remains because it renders split meshes with separate matrices.
+
+This is a shared model-rendering fix, not a promise that arbitrary render hooks, custom mesh matrices, particles, beams, clipping or screen-space drawing become chunk-aware. Those independent rendering systems can still require adapters. No HUD traces, server physics or ballistics changes.
+
+Validation: simulated unlisted addon entities, live hidden/box LOD recovery, parent rotation/root rebases, viewer mutation, stale cached origins, ragdoll origin preservation, attachment pose, parent cycles, filter exclusions, ACF/Wire callback count/flags, matrix preservation, exception cleanup and FLIR. P2M supplied diagnostic, collision, chunk networking/cleanup and candidate list regressions pass. No live Garry's Mod verification.
+
+Install: replace addons/infmap with the infmap folder from this ZIP. Fully restart the server and reconnect clients. Original valid BSP included.

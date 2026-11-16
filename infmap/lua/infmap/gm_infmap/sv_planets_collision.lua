@@ -1,0 +1,50 @@
+// this file handles the collision for planets
+InfMap.planet_chunk_table = InfMap.planet_chunk_table or {}
+
+local function try_invalid_chunk(chunk, filter)
+	InfMap.QueueColliderCleanup(InfMap.planet_chunk_table, chunk)
+end
+
+local function update_chunk(ent, chunk, oldchunk)
+	if IsValid(ent) and !InfMap.filter_entities(ent) and ent:IsSolid() then
+		// remove chunks that dont have anything in them
+		try_invalid_chunk(oldchunk)
+
+		// is entity even going into a planet chunk?
+		local spacing = InfMap.planet_spacing / 2 - 1
+		local _, megachunk = InfMap.localize_vector(chunk, InfMap.planet_spacing / 2)
+		local planet_chunk, planet_radius, mat = InfMap.planet_info(megachunk[1], megachunk[2])
+		
+		// no planet here!
+		if chunk != planet_chunk then return end
+
+		// chunk already exists, dont make another
+		if IsValid(InfMap.planet_chunk_table[InfMap.ezcoord(chunk)]) then return end
+
+		local e = ents.Create("infmap_planet")
+		InfMap.prop_update_chunk(e, chunk)
+		e:SetPlanetRadius(planet_radius)
+		e:SetModel("models/props_c17/FurnitureCouch002a.mdl")
+		e:SetMaterial(InfMap.planet_data[mat].InsideMaterial:GetName())
+		e:Spawn()
+		InfMap.planet_chunk_table[InfMap.ezcoord(chunk)] = e
+	end
+end
+
+// spawn planets after cleanup
+hook.Add("PostCleanupMap", "infmap_planet_regen", function()
+	for k, v in ipairs(ents.GetAll()) do
+		if !v.CHUNK_OFFSET then continue end
+		update_chunk(v, v.CHUNK_OFFSET)
+	end
+end)
+
+// handles generating chunk collision
+hook.Add("PropUpdateChunk", "infmap_infgen_planets", function(ent, chunk, oldchunk)
+	update_chunk(ent, chunk, oldchunk)
+end)
+
+hook.Add("EntityRemoved", "infmap_infgen_planets", function(ent)
+	if InfMap.filter_entities(ent) then return end
+	try_invalid_chunk(ent.CHUNK_OFFSET, ent)
+end)

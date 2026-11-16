@@ -1,0 +1,2 @@
+PASS: regression fixture exposes lost angular velocity in original teleport helpers; patched helpers preserve wheel RPM and linear velocity through 100 teleports/angle restores.
+PASS: force points use body chunk for positive/negative/zero chunks and boundary-straddling points; force vectors are unchanged.

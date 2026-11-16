@@ -1,0 +1,7 @@
+v32: Ordinary physics prop rendering
+
+Physics props now compose native positions/angles from their parent hierarchy and resolve the root/viewer chunk offset at draw time. Visibility bounds use the same position. Same-chunk physics props retain their managed wrapper so a missed notification cannot strand them in an old frame. Distant box rendering uses the live prop frame; existing distance limits remain. Temporary render origins and angles are restored, including callback errors. P2M's successful v31 rendering path is preserved. No server physics or trace changes.
+
+Validation: simulated parent rotations/rebases, stale cached origins and child chunks, viewer chunk mutation, same-chunk wrappers, error cleanup and Wire FLIR; P2M integration and supplied diagnostic regression passed. Not tested in a running Garry's Mod server.
+
+Install: replace the previous infmap addon folder with the infmap folder in this archive. Fully restart server and reconnect clients.

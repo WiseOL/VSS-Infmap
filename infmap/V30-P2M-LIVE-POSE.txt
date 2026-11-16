@@ -1,0 +1,48 @@
+REVISION 30 - P2M LIVE VIEWER FRAME AND EXPLICIT CONTROLLER POSE
+Extract the infmap folder into garrysmod/addons, replacing the previous addon.
+Includes maps/gm_infmap.bsp INSIDE the addon, as requested. Stop/restart fully;
+all clients must reconnect. Do not hot-reload over v28 render-state closures.
+Keep ACF-Team P2M and Wiremod installed separately.
+
+The previous render wrapper captured visual_offset when installed, and split
+mesh rendering still used the client child's cached world-transform matrix.
+Those assumptions do not cover a viewer chunk changing after synchronization,
+an in-place chunk Vector change, or a stale child world transform during rebase.
+
+NEW PATH
+At each P2M draw, resolve the current physical root chunk and viewer chunk.
+Compose controller linkpos/linkang through the actual parent's local transform
+chain to the root's native position/angles. Use that native pose for basic mesh
+render origin/bones, clip planes, and a newly constructed split-mesh matrix.
+Render origin/angles are restored after drawing; server positions/physics are
+not moved. Restore matrix/clip state on draw errors. Snapshot the viewer chunk
+by value for synchronization checks instead of retaining a mutable Vector.
+The v28 stable callback/FLIR ownership fix, mesh bounds and split part support
+remain. Linked controllers can resolve a root different from the P2M owner.
+
+The draw path consumes P2M's existing basic GetRenderMesh and recycle.complex
+geometry directly so a stale GetWorldTransformMatrix is not used for split
+parts. Existing entity material/color/scale and Wire FLIR render context remain.
+prop2mesh_render_disable suppresses this draw. P2M's optional original wireframe/
+debug-box visualization is not reproduced by the explicit-pose path; normal
+mesh/FLIR rendering is the target. No vendor addon files are replaced.
+
+DIAGNOSTICS IF STILL DISPLACED
+In your CLIENT game console while the mesh is visibly displaced:
+infmap_p2m_status
+Writes garrysmod/data/infmap/p2m_client_latest.json on that client, with at most
+128 controller pose records. Send that file if needed. It compares composed
+native pose, cached child pose, viewer chunk and root/child chunk metadata.
+
+VALIDATION
+Mocked render tests cover viewer mutation AFTER PreRender without wrapper
+reinstallation, stale child position, root native rebase, rotation and a linked
+controller with a different root. Basic and split pieces share the expected
+viewer-relative position. Wire FLIR toggles, clip planes, full scaled bounds,
+repeated chunk changes and error cleanup also pass. Existing client chunk/list,
+collision/network and camera regression tests pass. Tests exercise the adapter
+against the local P2M data layout and installed Wire FLIR implementation.
+No live GPU/server test. Does not repair missing P2M downloads, dormant network
+parents, root network/interpolation timing, or other addons overriding transforms.
+
+All prior v27 profiler/v26 expiry and map/ACF/water fixes remain included.

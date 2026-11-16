@@ -1,0 +1,27 @@
+REVISION 23 - LOADED-CRAFT BUOYANCY DAMPING
+Replace the previous combined addon folder, fully restart and reconnect.
+
+The prior damping used the buoyancy compartment's own mass. A compartment attached
+to a much heavier vessel therefore received insufficient damping for vessel heave.
+Now groups submerged active compartments by VSS baseplate, reads the framework's
+CFW_GetContraption().totalMass, and computes a shared exponential damping budget
+from that mass and combined waterline stiffness. Distributes it by compartment
+stiffness over the wet sample points. Adding identical total capacity in more
+compartments does not multiply the damping budget. Resistance fades at first
+water contact and leaves lift capacity, health, Wire ratios and lateral drag alone.
+
+If the framework mass is unavailable, falls back to baseplate physics mass plus
+active submerged compartment masses. That fallback cannot account for the rest
+of the boat. No constraints.GetAll or global entity scan is added per water tick.
+Native-water, immovable and dry compartments do not enter the damping group.
+VSS naval eligibility is still enforced in the existing force application path.
+
+Tests: actual water hook settles a simulated 50,000kg rigid boat with 100,000kg
+capacity at 30/66/100Hz. Splitting equal capacity across one or four compartments
+produces the same heave response in this simulation. Existing displacement,
+health/baseplate and actual Improved Buoyancy Tool integration tests also pass.
+This is not a live constrained-boat test. Pitch/roll, flexible constraints and
+framework mass reporting still require testing on your craft; no guarantee that
+all sources of bouncing are eliminated. Source native water remains unimplemented.
+
+Includes all previous map, ACF, waterjet, material, buoyancy tool and E2 hologram fixes.

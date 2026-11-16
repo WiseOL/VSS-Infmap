@@ -1,0 +1,39 @@
+REVISION 19 - DISPLACEMENT AND VSS BUOYANCY
+Replace the previous combined addon folder, fully restart and reconnect clients.
+
+Ordinary props now displace water according to collision volume, submerged
+fraction and buoyancy ratio rather than receiving lift proportional to their
+own mass. Low-density floatable props such as barrels can float; sufficiently
+heavy/dense props sink. Increasing mass does not increase displacement.
+Explicit tool ratios are retained even on branches without GetBuoyancyRatio.
+Without an accessible ratio, ordinary props use 1; engine-computed material
+ratios cannot be recovered exactly on those branches.
+
+Eight equal-volume OBB cells provide smooth approximate immersion and distributed
+lift. Drag uses velocity at each submerged point, opposing translation and rocking
+without directly changing angular velocity. Zero buoyancy disables lift, not drag.
+Native brush water is excluded to avoid applying water forces twice.
+
+VSS acf_buoyancy compartments are explicitly included. Uses MaxBuoyancyMass and
+its existing SetBuoyancyRatio output, including Wire percentage and health.
+The fork maps 100 percent to 100/60; the adapter uses the corresponding 0.6 scale
+so full immersion at 100 percent supplies the published capacity. Requires a
+naval baseplate just as the fork does. Does not replace the fork's entity Think,
+input actions, damage code or deletion rules. ACF must be installed separately.
+
+This is a Lua approximation of native water, not exact VPhysics parity: OBB
+immersion approximates irregular/hollow models; missing physics volume falls
+back to bounding-box volume, and drag has not been calibrated on a live server.
+WaterLevel/contents, native splashes and native engine vehicle-water controllers
+are not emulated by this force adapter. ACF waterjets are outside this change.
+
+Validation: actual water hook tested for mass/volume displacement, zero-ratio drag,
+dry/frozen/native-water exclusions, rotated/partial immersion, rotational drag,
+and settling at 30/66/100 Hz. The actual unmodified local VSS buoyancy Think and
+UpdateBuoyancyRatio were executed against the adapter: health and disconnected
+baseplate behavior pass. Tests use a barrel-density proxy, not a live model.
+Live barrel and naval craft comparisons against a regular water map are needed.
+
+API references:
+https://wiki.facepunch.com/gmod/PhysObj:GetVolume
+https://wiki.facepunch.com/gmod/PhysObj:GetVelocityAtPoint

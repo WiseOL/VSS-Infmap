@@ -1,0 +1,47 @@
+Revision 16 - reduce compatibility overhead under heavy firing
+
+ACF bullet visual events with the standard fields use a compact typed message:
+16-bit bullet index, 2-bit impact kind, draw/override flags, and six position/
+flight floats. Spawn events additionally carry the crate entity and ammo
+snapshot. They no longer serialize a general-purpose table or transmit the
+repeated effect name and field names. Other effects still use the existing
+message. Bullet effects with extra addon-hook fields or unsupported numeric
+flags automatically retain that format so their data is not dropped.
+
+Both protocols feed the same client lifecycle/impact handler, retaining the
+explosion fallback, metadata lifetime, deferred-initialization safeguards and
+256-projectile visual cap. Recipients, reliable message ordering, physics
+simulation, bullet flight frequency, collision segments and damage are unchanged.
+No client distance culling or new rate-of-fire/projectile cap was added.
+
+The line-trace bridge no longer copies its config to a temporary hull config
+before making the actual per-segment copy. It uses a shared zero-sized hull
+vector and immutable same-chunk cut pair. Crossing traces still allocate their
+own cut list. Original caller tables remain unmodified, and all existing
+filter/clip/output-table/fraction behavior remains covered by regressions.
+
+Admin/server console diagnostics:
+acf_infmap_fire_stats
+acf_infmap_trace_stats
+
+The first prints current live ballistic bullets, cumulative compact/generic
+message counts and encoded payload bytes (before multiplication by recipient
+count), plus the last native physics simulation step time in milliseconds.
+That physics time is not total server Lua/tick time. Take readings before and
+during a repeatable firing test. If lag persists, provide both readings, gun
+count, approximate fire rate and player count. Large active bullet populations,
+penetration/explosion processing and native physics can still dominate CPU.
+No live-server timing or bandwidth percentage has been measured.
+
+Install: replace the previous combined addon folder, fully restart the server
+and reconnect all clients (the bullet message format changed). Map, water,
+no-collide/physgun, P2M, RAC, camera and crew fixes are included. Keep v15 as
+rollback. The pending Workshop water-material change is not included because
+its source files have not been supplied.
+
+Tests: 1002 actual server packet encodings performed zero net.WriteTable calls;
+client decoding preserved large global positions, ammo metadata, penetration
+state, terminal impact/cleanup and duplicate suppression before visual Init.
+Custom-hook fields and fractional effect flags fell back to legacy format.
+Existing gun/radar/filter/fraction and 10000 same-chunk cases passed, alongside
+5000 bullet-update/lifecycle/cap/expiry checks. No live Garry's Mod playtest.

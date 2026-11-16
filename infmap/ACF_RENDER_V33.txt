@@ -1,0 +1,7 @@
+v33: ACF entity chunk rendering
+
+All acf_ entity classes now use the same live native parent/root/viewer frame as ordinary physics props. This covers same-chunk wrappers, distant model/box positions and visibility bounds. Existing entity Draw functions, captured RenderOverride callbacks and model matrices remain in place. No server physics, camera targeting or ballistic changes.
+
+Validation: mocked integration tests with all 31 acf_ classes in the supplied VSS fork, parent rotation, stale cached position, viewer changes without wrapper reinstall, original callback counts/flags, matrix preservation, temporary origin restoration and Wire FLIR. Ordinary prop, P2M and supplied diagnostic regressions pass. A running game is still needed to verify each entity's visual behavior.
+
+Install: replace addons/infmap with the infmap folder from this ZIP. Fully restart server and reconnect clients. Map included.

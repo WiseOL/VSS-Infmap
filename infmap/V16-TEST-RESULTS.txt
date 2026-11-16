@@ -1,0 +1,16 @@
+PASS: gun/barrel/radar chunk routing; 10,000 same-chunk checks; HUD, tools and unrelated ballistics use original traces; bounds and error-scope recovery.
+PASS: 5,000 bullet updates allocate zero additional effects; terminal/orphan/removal cleanup; reused-index ownership; 256 visual cap; wall-clock expiry; client traces untouched.
+PASS: 1002 compact packets use zero table serialization; custom fields/fractional flags retain legacy format; actual receiver preserves global positions, ammo metadata, penetration/detonation state, terminal cleanup and duplicate suppression before visual Init.
+PASS: WORLD-group props preserve public group, collide with same-chunk terrain/planets/OBJ, ignore ordinary entities, reject other chunks, and restore normal group.
+PASS: 800 terrain/planet cleanup requests coalesce to one scan; occupied/reoccupied chunks retained and empty chunks removed.
+PASS: actual server networking propagates real changes once per descendant and skips 600 redundant updates.
+PASS: P2M local link transforms corrected; physical-parent chunk overrides stale mesh metadata; viewer changes sync; clip refresh retained without wrapper recursion.
+PASS: actual client list refresh uses one full snapshot and retains visible candidate order during compaction.
+PASS: repeated coordinate rebases create no Gs; real acceleration/braking and boundary impact retained; sample rates honored; centripetal and relative turret motion retained; other trackers unchanged.
+PASS: no override on ordinary maps.
+PASS: actual ACF AI/O ProcessCameras returns global aim through positive/negative/distant chunks and hits another chunk; HUD stays unchanged.
+PASS: TFE camera aims keep global targets across multiple axes/chunks, queued packets retain their frame, repeated require is safe, other messages and repaired scripts remain unchanged.
+PASS: Starfall bridge does not activate on ordinary maps.
+PASS: explicit buoyancy on unlisted material without getter; zero disables lift; dry/frozen props untouched; rotated immersion detected; impulse scales with tick interval; simulated props settle at surface at 30/66/100 Hz; no forced sleep.
+
+Mocked API tests only; no live server performance claim.

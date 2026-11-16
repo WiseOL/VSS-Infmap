@@ -1,0 +1,30 @@
+REVISION 21 - ALL PROP MATERIALS / IMPROVED BUOYANCY TOOL
+Replace the old combined addon folder, restart fully and reconnect clients.
+Includes map and v20 water material delivery, jet detection and compartment damping.
+
+All ordinary prop_* entities with valid movable physics receive water displacement
+and drag regardless of physics material. Buoyancy does not guarantee floating:
+volume, mass and ratio still determine whether a prop floats or sinks. Frozen
+objects, players/NPCs, and entities already inside native water are excluded.
+
+Compatible with Buoyancy Tool (Improved), Workshop 3409062403:
+https://steamcommunity.com/sharedfiles/filedetails/?id=3409062403
+Keep the tool installed separately; it is not repackaged or modified here.
+Reads its entity BuoyancyRatio multiplier or EntityMods.buoyancy.Ratio percentage,
+including signed values. Negative values now push downward rather than clamping
+to zero. Zero supplies no lift but retains water resistance. Reload follows the
+actual tool behavior: clears saved setting and sets native ratio to zero.
+Entity/modifier metadata preserves settings when physics objects are recreated.
+The normal PhysObj setter remains called; values from other buoyancy tools are
+also tracked. VSS compartments retain their own ratio/health/baseplate rules.
+Explicitly adjusted scripted physics props are included via weak entity registry,
+without scanning every entity each water tick. Existing tool metadata is registered
+at map initialization and cleanup. Multi-body ragdoll simulation is not included;
+this adapter processes the primary physics object, as this tool does.
+
+Validation executed the installed Workshop GMA's actual tool Lua code against the
+water hook: left/right/reload, signed ratios, dupe modifier callback, physgun-drop
+reapply, physics recreation, saved percentages, unlisted materials and scripted
+props pass. Water, compartment and actual VSS waterjet regression tests pass.
+These are mocked Lua/physics integration tests, not live Garry's Mod tests.
+The water remains a Lua approximation, not native brush-water physics.

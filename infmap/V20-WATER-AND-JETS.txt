@@ -1,0 +1,46 @@
+REVISION 20 - WATER CONTENT DELIVERY, VSS JETS, COMPARTMENT DAMPING
+Replace the old combined addon folder, restart fully and reconnect all clients.
+
+VISUALS
+The v18 custom material was present in the server addon but was not registered
+for client download; the original Workshop package does not contain that new VMT.
+Restores infmap/water_warp from the original map addon and explicitly registers
+its VMT and bundled normal VTF with resource.AddSingleFile. If the material or
+normal texture is missing/error on the client, uses built-in effects/water_warp01.
+The screenshot's checkerboard is consistent with the missing custom client VMT.
+This is the original InfMap water appearance, not Hammer dev/dev_water2_cheap.
+No claim of visually verified rendering; test on a connected client.
+
+WATERJETS
+Both acf_waterjet and acf_naval_waterjet check native PointContents, which does
+not see the Lua plane. Narrow wrappers update only those entities' InWater state
+using the global water height plus the native contents at the engine-local
+position. Think, Calc and Act retain original VSS methods. Calc/Act refresh state
+immediately so a prior dry Think cannot prevent operation after entering water.
+Does not detour util.PointContents globally or change thrust/gear calculations,
+steering, sound, scheduling or naval-baseplate eligibility/removal rules.
+Installed only when InfMap and ACF are active, with bounded startup retries.
+
+BOUNCING
+Compartment vertical drag now scales with its displacement spring stiffness,
+physical mass and submerged coverage, instead of fixed ordinary-prop resistance.
+Uses time-scaled exponential damping. Lateral drag and fork-reported lift capacity,
+Wire inputs and damage scaling remain as in v19. Linked craft behavior still
+requires live testing; constraints/effective craft mass are not fully modeled.
+
+NATIVE WATER LIMITATION
+This map has a rendered water plane, not a compiled Source water brush volume.
+A material change cannot enable native VPhysics water, native WaterLevel or all
+native water effects. These fixes repair detection and improve the existing Lua
+simulation. Exact default GMod water behavior has NOT been implemented. That
+requires a separately validated engine-water/map solution for rebased chunks.
+
+TESTS
+Actual local VSS regular/naval jet Calc, Act, Think passed submerged thrust,
+above-water cutoff, distant coordinates, native contents, scheduling, repeat
+installation and naval restriction/removal checks under mocked GMod APIs.
+Existing v19 volume/ratio/health/baseplate tests pass. A simulated compartment
+settles without sustained bouncing at 30/66/100Hz. Missing material/normal fallback
+and resource registration tested. No live server rendering or craft test performed.
+
+Reference: https://wiki.facepunch.com/gmod/resource.AddFile

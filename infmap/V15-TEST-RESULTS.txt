@@ -1,0 +1,1 @@
+PASS: explicit tool ratio and zero on a branch without getter; native getter positive/zero; rotated bounds; dry/frozen props untouched; no forced sleep; force/drag scaling with tick interval; simplified surface-settling simulation at 30/66/100 Hz. Existing collision/P2M, camera and crew tests pass. Mocked runtime only.

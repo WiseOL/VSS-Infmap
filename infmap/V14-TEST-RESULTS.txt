@@ -1,0 +1,1 @@
+PASS: gun/radar routing and existing effect lifecycle regressions; server ammo snapshot via crate index; impact before deferred visual Init; detonation while projectile visual cap is full; duplicate terminal suppression; bounded 2048 metadata entries. Lua API fixtures only. Metadata retention now 120 seconds; no live GMod playtest.

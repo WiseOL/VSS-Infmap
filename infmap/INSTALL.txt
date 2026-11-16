@@ -1,0 +1,20 @@
+InfMap + upstream ACF-3 + optional VSS Extension — v37
+
+1. Stop the server.
+2. Replace the old garrysmod/addons/infmap folder with the infmap folder in this ZIP. Do not merge multiple releases or leave another InfMap compatibility addon enabled.
+3. Install ACF-Team/ACF-3 and PERSON00331/ACF-VSS-Extension as separate addons. Remove/disable the old ACF VSS fork to avoid duplicate ACF installations. ACF and its extension are not bundled in this map addon.
+4. Keep ACF's required Wiremod and Contraption Framework dependencies installed. Keep Tank Track Tool / Prop2Mesh installed if used.
+5. Start the server on gm_infmap, and reconnect clients. A full restart/reconnect clears old cached functions.
+6. Run acf_infmap_status from the server console. See UPSTREAM_V37.md for expected feature indicators and the exact source revisions checked.
+
+This archive has one top-level infmap folder and includes maps/gm_infmap.bsp. No manual map-folder installation is required.
+
+Bullet visuals on InfMap are server-authoritative. Server command-clock ballistics continue to run, but local predicted effects are disabled to avoid chunk/network-coordinate errors. No mobility or thrust rebalance was introduced.
+
+Useful diagnostics:
+  acf_infmap_status
+  acf_infmap_ballistics status
+  acf_infmap_profile start 30
+  infmap_track_status (affected client)
+
+Compatibility updates were validated against source functions in simulated environments; in-game verification is still required. Earlier version notes are historical; UPSTREAM_V37.md supersedes instructions referring to the VSS fork or its timer replacement.
